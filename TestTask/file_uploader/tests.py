@@ -14,33 +14,34 @@ class UploaderTests(APITestCase):
         u.save()
         t = Token.objects.create(user=u)
         t.save()
-        print(u)
+        UploadFile.objects.create(owner=u, file=open(r'.\media\covid_worldwide.csv').name).save()
+        UploadFile.objects.create(owner=u, file=open(r'.\media\Survey_AI.csv').name).save()
 
     def test_unauthorized(self):
         url = reverse('upload')
         client = APIClient()
-        f = open(r'C:\Users\user\Desktop\prc_hpi_a__custom_3617733_page_linear.csv')
+        f = open(r'..\test_datasets\prc_hpi_a__custom_3617733_page_linear.csv')
         data = {'datafile': f}
         response = client.post(url, data, format='multipart')
-        #print(response)
-        #print(UploadFile.objects.all())
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(UploadFile.objects.count(), 2)
 
     def test_authorized(self):
         url = reverse('upload')
-        f = open(r'C:\Users\user\Desktop\prc_hpi_a__custom_3617733_page_linear.csv')
+        f = open(r'..\test_datasets\prc_hpi_a__custom_3617733_page_linear.csv')
         data = {'datafile': f}
-        print(User.objects.all())
-        print(Token.objects.all())
-        #u = User.objects.create_user('test_user', password='test', email='test@mail.ru')
-        #u.save()
         token = Token.objects.get(user__username='test_user')
-        print("AAA"+token)
-        client = APIClient()
-        #client.login(username='test_user', password='test')
-        #client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
+        #client = APIClient()
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
 
-        response = client.post(url, data, format='multipart')
-        print(response)
-        print(UploadFile.objects.all())
-        self.assertEqual(False, True)
+        response = self.client.post(url, data, format='multipart')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(UploadFile.objects.count(), 3)
+        self.assertEqual(response.data.get('owner'), 1)
+
+
+    def test_get_files_list(self):
+        url = reverse('upload')
+        client = APIClient()
+        response = self.client.get(url, format='json')
+        assert False

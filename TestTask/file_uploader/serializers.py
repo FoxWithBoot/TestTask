@@ -6,4 +6,6 @@ from file_uploader.models import UploadFile
 class UploaderSerializer(serializers.ModelSerializer):
     class Meta:
         model = UploadFile
-        fields = ('created', 'datafile', 'owner')
+        fields = ('owner', 'created', 'file')
+
+class FileListSerializer(serializers.Serializer):
