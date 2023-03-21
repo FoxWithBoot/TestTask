@@ -12,6 +12,8 @@ class UploaderTests(APITestCase):
     def setUp(cls):
         u = User.objects.create_user('test_user', password='test', email='test@mail.ru')
         u.save()
+        t = Token.objects.create(user=u)
+        t.save()
         print(u)
 
     def test_unauthorized(self):
@@ -30,9 +32,9 @@ class UploaderTests(APITestCase):
         data = {'datafile': f}
         print(User.objects.all())
         print(Token.objects.all())
-        u = User.objects.create_user('test_user', password='test', email='test@mail.ru')
-        u.save()
-        token = Token.objects.get_or_create(user=u)
+        #u = User.objects.create_user('test_user', password='test', email='test@mail.ru')
+        #u.save()
+        token = Token.objects.get(user__username='test_user')
         print("AAA"+token)
         client = APIClient()
         #client.login(username='test_user', password='test')
