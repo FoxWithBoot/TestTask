@@ -31,17 +31,22 @@ class UploaderTests(APITestCase):
         f = open(r'..\test_datasets\prc_hpi_a__custom_3617733_page_linear.csv')
         data = {'datafile': f}
         token = Token.objects.get(user__username='test_user')
-        #client = APIClient()
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
 
         response = self.client.post(url, data, format='multipart')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(UploadFile.objects.count(), 3)
         self.assertEqual(response.data.get('owner'), 1)
-
+        self.assertTrue(response.data.get('created'))
+        self.assertTrue(response.data.get('file'))
 
     def test_get_files_list(self):
         url = reverse('upload')
-        client = APIClient()
         response = self.client.get(url, format='json')
-        assert False
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 2)
+        self.assertTrue(response.data[0].get('owner'))
+        self.assertTrue(response.data[0].get('created'))
+        self.assertTrue(response.data[0].get('file'))
+        self.assertTrue(response.data[0].get('fields'))
