@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 
 from file_uploader.models import UploadFile, User
 
-from file_uploader.serializers import UploaderSerializer, FileListSerializer, ErrorSerializer, FormalSerializer
+from file_uploader.serializers import UploaderSerializer, FileListSerializer, ErrorSerializer
 
 import pandas as pd
 
@@ -22,7 +22,7 @@ class Uploader(APIView):
         file = UploadFile.objects.create(owner=self.request.user, file=request.data.get('datafile'))
         return Response(data=UploaderSerializer(file).data, status=status.HTTP_201_CREATED)
 
-    @swagger_auto_schema(responses={status.HTTP_200_OK: FormalSerializer()})
+    @swagger_auto_schema(responses={status.HTTP_200_OK: FileListSerializer()})
     def get(self, request):
         """Получение списка всех файлов с информацией об их полях"""
         files = UploadFile.objects.all()
@@ -34,6 +34,7 @@ class Uploader(APIView):
             files_list.append(serialized_file)
         return Response(data=files_list, status=status.HTTP_200_OK)
 
+    # Альтернативный вариант
     # def get(self, request):
     #     files = UploadFile.objects.all()
     #     files_list = []

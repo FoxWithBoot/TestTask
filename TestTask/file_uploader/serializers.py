@@ -9,22 +9,17 @@ class UploaderSerializer(serializers.ModelSerializer):
         fields = ('owner', 'created', 'file')
 
 
-# class FileListSerializer(serializers.ModelSerializer):
-#     #file = UploaderSerializer()
-#     fields = serializers.ListField()
-#
-#     class Meta:
-#         model = UploadFile
-#         fields = ('owner', 'created', 'file', 'fields')
-class FormalSerializer(serializers.ModelSerializer):
+class FileListSerializer(serializers.ModelSerializer):
     fields = serializers.ListField()
+
     class Meta:
         model = UploadFile
         fields = ('owner', 'created', 'file', 'fields')
 
-class FileListSerializer(serializers.Serializer):
-    file = UploaderSerializer()
-    fields = serializers.ListField()
+# Альтернативный вариант
+# class FileListSerializer(serializers.Serializer):
+#     file = UploaderSerializer()
+#     fields = serializers.ListField()
 
 
 class ErrorSerializer(serializers.Serializer):
