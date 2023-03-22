@@ -69,7 +69,7 @@ class UploaderTests(APITestCase):
         ('/drop/Survey_AI.csv/?sort=Q12.Gender&ascending=True&ascending=True', status.HTTP_200_OK),
         ('/drop/Survey_AI.csv/?filter=Q15.Passed_exams&Q12.Gender', status.HTTP_200_OK),
         ('/drop/Survey_AI.csv/?ascending=True', status.HTTP_200_OK),
-        ('/drop/Survey_AI.csv/?sort=Q12.Gender&sort=Q15.Passed_exams&ascending=y&ascending=True', status.HTTP_200_OK),
+        ('/drop/Survey_AI.csv/?sort=Q12.Gender&sort=Q15.Passed_exams&ascending=XXX&ascending=True', status.HTTP_200_OK),
         ('/drop/Survey_AI.csv/?sort=Q12.Gender&ascending=True', status.HTTP_200_OK),
         ('/drop/Survey_AI.csv/?sort=Q12.Gender&ascending=True&json_format=records', status.HTTP_200_OK),
         ('/drop/Survey_AI.csv/?filter=Q15.Passed_exams&sort=Q12.Gender&ascending=True&json_format=records', status.HTTP_200_OK),

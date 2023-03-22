@@ -61,10 +61,14 @@ class Dropper(APIView):
         json_format = request.query_params.get('json_format', None)
         list_ascends = request.query_params.getlist('ascending')
         for i in range(len(list_ascends)) if len(list_ascends) <= len(sorts) else range(len(sorts)):
-            try:
-                ascends[i] = eval(list_ascends[i])
-            except NameError:
+            if list_ascends[i]!='True' or list_ascends[i]!='False':
                 ascends[i] = True
+            else:
+                ascends[i] = eval(list_ascends[i])
+            # try:
+            #     ascends[i] = eval(list_ascends[i])
+            # except NameError:
+            #     ascends[i] = True
         try:
             file = UploadFile.objects.get(file=kwargs['filename'])
             data = pd.read_csv(file.file.path)
